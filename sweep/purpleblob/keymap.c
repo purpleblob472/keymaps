@@ -21,10 +21,13 @@ typedef struct {
 } td_tap_t;
 
 enum {
-    TF1, TF5, TF9, TH1, TH2, TH3, TH4, TH5, TH6, TH7, TH8, TH9, TH0
+    THUMB, TF1, TF5, TF9, TH1, TH2, TH3, TH4, TH5, TH6, TH7, TH8, TH9, TH0
 };
 
 td_state_t cur_dance(tap_dance_state_t *state);
+
+void thumb_finished(tap_dance_state_t *state, void *user_data);
+void thumb_reset(tap_dance_state_t *state, void *user_data);
 
 void tf1_finished(tap_dance_state_t *state, void *user_data);
 void tf1_reset(tap_dance_state_t *state, void *user_data);
@@ -60,35 +63,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //Main Layer
     [0] = LAYOUT(
 
-        KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
-        LSFT_T(KC_A), LCTL_T(KC_S), LALT_T(KC_D), LGUI_T(KC_F), KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    LSFT_T(KC_ENT), 
-        KC_P,         KC_Z,         KC_X,         KC_C,         KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,
-                                    KC_BSPC, MO(1), LT(2, KC_SPC),  LCTL_T(KC_SCLN)
+        KC_Q,         KC_W,         KC_F,         KC_P,        KC_G,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN,
+        KC_A, KC_R, KC_S, KC_T, KC_D, KC_H, KC_N, KC_E, KC_I, KC_O, 
+        LSFT_T(KC_SLSH), LCTL_T(KC_Z), LALT_T(KC_X), LGUI_T(KC_C), KC_V, KC_B, LGUI_T(KC_K), LALT_T(KC_M),    LCTL_T(KC_COMM), LSFT_T(KC_DOT),
+                        KC_BSPC, MO(1), LT(2, KC_SPC),  KC_ENT
     ),
 
 //Punc Layer
     [1] = LAYOUT(
 
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        KC_TAB,  KC_AT,   KC_LCBR, KC_LPRN, KC_LBRC, KC_RBRC, KC_RPRN, KC_RCBR, KC_QUOT, _______,
+        KC_TAB,  KC_AT,   KC_LCBR, KC_LPRN, KC_LBRC, KC_RBRC, KC_RPRN, KC_RCBR, KC_QUOT, KC_DQT, 
         KC_NUHS,  KC_EXLM, S(KC_NUBS), KC_AMPR, KC_PERC, KC_CIRC, KC_DLR,  KC_ASTR, KC_NUBS, KC_SLSH,
                                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
 //Nav Layer
     [2] = LAYOUT(
-
-        KC_ESC,  KC_DQT,     _______, _______, _______, KC_INS,  TD(TF1), TD(TF5), TD(TF9), KC_DEL,
-        KC_LEFT, KC_DOWN,    KC_UP,   KC_RGHT, _______, _______, C(KC_LEFT), C(KC_DOWN), C(KC_UP), C(KC_RGHT),
-        S(KC_NUHS), KC_PGDN, KC_PGUP, KC_HOME, _______, _______, KC_END,  _______, _______, _______,
-                                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+//KC_AT (KC_DQT), KC_INS, KC_DEL
+        KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10,
+        KC_LEFT, KC_DOWN,    KC_UP,   KC_RGHT, KC_F11, KC_F12, C(KC_LEFT), C(KC_DOWN), C(KC_UP), C(KC_RGHT),
+        S(KC_NUHS), KC_PGDN, KC_PGUP, KC_HOME, KC_INS, KC_DEL, KC_END,  _______, _______, _______,
+                                      KC_ESC, KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
 //Hypr Layer (TRI LAYER = PUNC+NAV)
     [3] = LAYOUT(
 
         TD(TH1), TD(TH2), TD(TH3), TD(TH4), TD(TH5), TD(TH6), TD(TH7), TD(TH8), TD(TH9), TD(TH0),
-        A(KC_SPC),_______,_______, _______, _______, _______, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT,
+        A(KC_SPC),_______, A(KC_F4), _______, _______, _______, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT,
         KC_CAPS, _______, _______, _______, CM_TOGG, DF(4),   _______, _______, _______, CW_TOGG,
                                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     ),
@@ -113,10 +116,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-const uint16_t PROGMEM cmb_mins[] = {LALT_T(KC_D), LGUI_T(KC_F), COMBO_END};
-const uint16_t PROGMEM cmb_plus[] = {KC_J, KC_K, COMBO_END};
-const uint16_t PROGMEM cmb_eql[] = {LGUI_T(KC_F), KC_J, COMBO_END};
-const uint16_t PROGMEM cmb_unds[] = {KC_C, KC_N, COMBO_END};
+const uint16_t PROGMEM cmb_mins[] = {KC_F, KC_T, COMBO_END};
+const uint16_t PROGMEM cmb_plus[] = {KC_N, KC_U, COMBO_END};
+const uint16_t PROGMEM cmb_eql[] = {KC_D, KC_H, COMBO_END};
+const uint16_t PROGMEM cmb_unds[] = {KC_C, KC_K, COMBO_END};
 combo_t key_combos[] = {
     COMBO(cmb_mins, KC_MINS),
     COMBO(cmb_plus, KC_PLUS),
@@ -139,6 +142,29 @@ td_state_t cur_dance(tap_dance_state_t *state) {
     else return TD_UNKNOWN;
 }
 
+
+static td_tap_t thumbtap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void thumb_finished(tap_dance_state_t *state, void *user_data) {
+    thumbtap_state.state = cur_dance(state);
+    switch (thumbtap_state.state) {
+        case TD_SINGLE_TAP: set_oneshot_mods(MOD_MASK_GUI); break;
+        case TD_DOUBLE_TAP: set_oneshot_mods(MOD_MASK_ALT); break;
+        default: break;
+    }
+}
+
+void thumb_reset(tap_dance_state_t *state, void *user_data) {
+    switch (thumbtap_state.state) {
+        case TD_SINGLE_TAP: clear_mods(); break;
+        case TD_DOUBLE_TAP: clear_mods(); break;
+        default: break;
+    }
+    thumbtap_state.state = TD_NONE;
+}
 static td_tap_t tf1tap_state = {
     .is_press_action = true,
     .state = TD_NONE
@@ -583,6 +609,7 @@ void th0_reset(tap_dance_state_t *state, void *user_data) {
 
 
 tap_dance_action_t tap_dance_actions[] = {
+    [THUMB] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, thumb_finished, thumb_reset),
     [TF1] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, tf1_finished, tf1_reset),
     [TF5] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, tf5_finished, tf5_reset),
     [TF9] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, tf9_finished, tf9_reset),
