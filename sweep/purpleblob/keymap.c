@@ -116,10 +116,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-const uint16_t PROGMEM cmb_mins[] = {KC_F, KC_T, COMBO_END};
-const uint16_t PROGMEM cmb_plus[] = {KC_N, KC_U, COMBO_END};
-const uint16_t PROGMEM cmb_eql[] = {KC_D, KC_H, COMBO_END};
-const uint16_t PROGMEM cmb_unds[] = {KC_C, KC_K, COMBO_END};
+const uint16_t PROGMEM cmb_mins[] = {KC_D, KC_F, COMBO_END};
+const uint16_t PROGMEM cmb_plus[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM cmb_eql[] = {KC_F, KC_J, COMBO_END};
+const uint16_t PROGMEM cmb_unds[] = {KC_C, KC_N, COMBO_END};
 combo_t key_combos[] = {
     COMBO(cmb_mins, KC_MINS),
     COMBO(cmb_plus, KC_PLUS),
